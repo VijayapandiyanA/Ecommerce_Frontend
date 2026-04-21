@@ -1,0 +1,203 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.admin-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f4f4f4, #e9ecef);
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.admin-title {
+  font-size: 38px;
+  color: #111;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.admin-form-card {
+  background: #fff;
+  border-radius: 18px;
+  padding: 30px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  margin-bottom: 35px;
+}
+
+.admin-form-title {
+  font-size: 26px;
+  margin-bottom: 20px;
+  color: #111;
+}
+
+.admin-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.admin-input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 15px;
+  border: 1px solid #dcdcdc;
+  border-radius: 10px;
+  outline: none;
+  box-sizing: border-box;
+  transition: 0.3s ease;
+}
+
+.admin-input:focus {
+  border-color: #111;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
+}
+
+.admin-btn-group {
+  margin-top: 20px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.admin-submit-btn,
+.admin-cancel-btn,
+.admin-edit-btn,
+.admin-delete-btn {
+  border: none;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.admin-submit-btn {
+  background: #111;
+  color: #fff;
+}
+
+.admin-submit-btn:hover {
+  background: #333;
+  transform: translateY(-2px);
+}
+
+.admin-cancel-btn {
+  background: #9ca3af;
+  color: #fff;
+}
+
+.admin-cancel-btn:hover {
+  background: #6b7280;
+}
+
+.admin-products-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.admin-product-card {
+  background: #fff;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.07);
+  transition: 0.3s ease;
+}
+
+.admin-product-card:hover {
+  transform: translateY(-6px);
+}
+
+.admin-product-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  background: #f8f8f8;
+}
+
+.admin-product-content {
+  padding: 18px;
+}
+
+.admin-product-name {
+  font-size: 22px;
+  margin: 0 0 10px;
+  color: #111;
+}
+
+.admin-product-desc {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.5;
+  min-height: 42px;
+  margin-bottom: 10px;
+}
+
+.admin-product-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111;
+  margin-bottom: 8px;
+}
+
+.admin-product-stock,
+.admin-product-category {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.admin-card-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.admin-edit-btn {
+  background: #2563eb;
+  color: #fff;
+}
+
+.admin-edit-btn:hover {
+  background: #1d4ed8;
+}
+
+.admin-delete-btn {
+  background: #dc2626;
+  color: #fff;
+}
+
+.admin-delete-btn:hover {
+  background: #b91c1c;
+}
+
+@media (max-width: 992px) {
+  .admin-products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-products-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-title {
+    font-size: 30px;
+  }
+
+  .admin-form-card {
+    padding: 20px;
+  }
+}

@@ -1,0 +1,88 @@
+/* Navbar Container */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: #111;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Logo */
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Links container */
+.nav-links {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Common button style */
+.nav-btn {
+  text-decoration: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 6px;
+  background: #222;
+  transition: 0.3s ease;
+  cursor: pointer;
+  border: none;
+}
+
+/* Hover */
+.nav-btn:hover {
+  background: #444;
+  transform: translateY(-2px);
+}
+
+/* Special buttons */
+.login {
+  background: #2563eb;
+}
+
+.login:hover {
+  background: #1d4ed8;
+}
+
+.register {
+  background: #16a34a;
+}
+
+.register:hover {
+  background: #15803d;
+}
+
+.logout {
+  background: #dc2626;
+}
+
+.logout:hover {
+  background: #b91c1c;
+}
+
+/* Welcome text */
+.welcome {
+  margin-right: 10px;
+  font-size: 14px;
+  color: #ccc;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

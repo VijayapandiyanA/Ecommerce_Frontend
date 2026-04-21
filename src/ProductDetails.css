@@ -1,0 +1,143 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.product-details-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.product-details-card {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  display: flex;
+  gap: 40px;
+  padding: 35px;
+  align-items: center;
+}
+
+.product-image-box {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8f8f8;
+  border-radius: 14px;
+  padding: 20px;
+}
+
+.product-detail-image {
+  width: 100%;
+  max-width: 420px;
+  height: 420px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.product-info-box {
+  flex: 1;
+}
+
+.product-title {
+  font-size: 36px;
+  margin: 0 0 16px;
+  color: #111;
+}
+
+.product-description {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #555;
+  margin-bottom: 22px;
+}
+
+.product-price {
+  font-size: 30px;
+  color: #111;
+  margin-bottom: 18px;
+}
+
+.product-category {
+  font-size: 16px;
+  color: #444;
+  margin-bottom: 12px;
+}
+
+.product-category span {
+  font-weight: 600;
+  color: #111;
+}
+
+.product-stock {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+.in-stock {
+  color: #16a34a;
+}
+
+.out-stock {
+  color: #dc2626;
+}
+
+.add-cart-btn {
+  padding: 14px 28px;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.add-cart-btn:hover {
+  background: #333;
+  transform: translateY(-2px);
+}
+
+.add-cart-btn:disabled {
+  background: #999;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.product-status {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 60px;
+  color: #222;
+}
+
+.error-text {
+  color: red;
+}
+
+@media (max-width: 768px) {
+  .product-details-card {
+    flex-direction: column;
+    padding: 20px;
+    gap: 24px;
+  }
+
+  .product-detail-image {
+    height: 300px;
+  }
+
+  .product-title {
+    font-size: 28px;
+  }
+
+  .product-price {
+    font-size: 24px;
+  }
+}
