@@ -47,9 +47,11 @@ void,
         const res = api.get("/products")
         return (await res).data.data
     }
-    catch(err:any){
-        rejectWithValue(err.response?.data?.message || "Falied to fetch Products")
-    }
+   catch (err: any) {
+  return rejectWithValue(
+    err.response?.data?.message || "Failed to fetch Products"
+  );
+}
 })
 
 
@@ -132,47 +134,70 @@ export const deleteProduct = createAsyncThunk<
 
 
 const productSlice = createSlice({
-    name:"products",
-    initialState,
-    reducers:{},
-
-    extraReducers(builder) {
-        
-builder
-       .addCase(fetchProducts.pending,(state)=>{
-        state.loading= true,
-        state.error = null
-       })
-
-       .addCase(fetchProducts.fulfilled,(state,action)=>{
-        state.loading= false,
-        state.products= action.payload
-       })
-
-       .addCase(fetchProducts.rejected,(state,action)=>{
-        state.loading = false,
-        state.error = action.payload ?? "Error Fetching Products"
-       })
-       .addCase(fetchProductById.pending, (state) => {
-  state.loading = true;
-  state.error = null;
-})
-
-.addCase(fetchProductById.fulfilled, (state, action) => {
-  state.loading = false;
-  state.selectedProduct = action.payload;
-})
-
-.addCase(fetchProductById.rejected, (state, action) => {
-  state.loading = false;
-  state.error = action.payload ?? "Error fetching product";
-});
+  name: "products",
+  initialState,
+  reducers: {
+    clearSelectedProduct: (state) => {
+      state.selectedProduct = null;
     },
-    
+  },
+  extraReducers: (builder) => {
+    builder
+      // GET ALL
+      .addCase(fetchProducts.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProducts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.products = action.payload;
+      })
+      .addCase(fetchProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch products";
+      })
 
-    
+      // GET BY ID
+      .addCase(fetchProductById.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProductById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedProduct = action.payload;
+      })
+      .addCase(fetchProductById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch product";
+      })
 
-    
-})
+      // CREATE
+      .addCase(createProduct.fulfilled, (state, action) => {
+        state.products.push(action.payload);
+      })
+
+      // UPDATE
+      .addCase(updateProduct.fulfilled, (state, action) => {
+        const updatedProduct = action.payload.data || action.payload;
+
+        state.products = state.products.map((product) =>
+          product.id === updatedProduct.id ? updatedProduct : product
+        );
+      })
+
+      // DELETE - THIS FIXES YOUR FIRST ISSUE
+      .addCase(deleteProduct.fulfilled, (state, action) => {
+        state.products = state.products.filter(
+          (product) => product.id !== action.payload
+        );
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
+        state.error = action.payload || "Failed to delete product";
+      });
+  },
+});
+
+export const { clearSelectedProduct } = productSlice.actions;
+
 
 export default productSlice.reducer;

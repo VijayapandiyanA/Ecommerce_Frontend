@@ -1,14 +1,21 @@
 import { Navigate } from "react-router-dom";
+import { ReactNode } from "react";
 import { useAppSelector } from "../store/hooks";
 
-export default function AdminRoute({ children }: any) {
-  const { user } = useAppSelector((state) => state.auth);
+type Props = {
+  children: ReactNode;
+};
 
-  if (!user) return <Navigate to="/login" />;
+export default function AdminRoute({ children }: Props) {
+  const { token, user } = useAppSelector((state) => state.auth);
 
-  if (user.role !== "admin") {
-    return <Navigate to="/" />;
+  if (!token) {
+    return <Navigate to="/login" replace />;
   }
 
-  return children;
+  if (user && user.role !== "admin") {
+    return <Navigate to="/products" replace />;
+  }
+
+  return <>{children}</>;
 }
