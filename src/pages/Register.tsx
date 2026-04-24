@@ -27,7 +27,7 @@ export const Register = () => {
         name,
         email,
         password,
-        role: "user",
+        role: "admin",
       })
     );
 
