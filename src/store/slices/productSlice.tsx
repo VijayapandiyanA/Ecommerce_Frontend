@@ -44,8 +44,8 @@ export const fetchProducts = createAsyncThunk<Product[],
 void,
 {rejectValue:string}>("products/getAll",async(_,{rejectWithValue})=>{
     try{
-        const res = api.get("/products")
-        return (await res).data.data
+        const res = await api.get("/products")
+        return res.data.data
     }
    catch (err: any) {
   return rejectWithValue(

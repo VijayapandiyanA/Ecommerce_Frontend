@@ -7,7 +7,12 @@ type Props = {
 };
 
 export default function AdminRoute({ children }: Props) {
-  const { token, user } = useAppSelector((state) => state.auth);
+  const { token, user, loading } = useAppSelector((state) => state.auth);
+
+  // While auth is loading, show nothing (prevents redirect flashing)
+  if (loading) {
+    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
+  }
 
   // No token means not logged in
   if (!token) {
