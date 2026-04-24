@@ -39,24 +39,39 @@ interface LoginResponse {
 
 
 
+// Helper functions to safely get auth data from localStorage
+const getInitialToken = (): string | null => {
+  try {
+    const token = localStorage.getItem("token");
+    if (token) {
+      console.log("✅ Token restored from localStorage");
+    }
+    return token;
+  } catch (err) {
+    console.error("Error reading token from localStorage:", err);
+    return null;
+  }
+};
+
+const getInitialUser = (): User | null => {
+  try {
+    const userStr = localStorage.getItem("user");
+    if (userStr) {
+      const user = JSON.parse(userStr);
+      console.log("✅ User restored from localStorage:", user.email);
+      return user;
+    }
+  } catch (err) {
+    console.error("Error reading user from localStorage:", err);
+  }
+  return null;
+};
+
 const initialState: AuthState = {
-    user: (() => {
-        try {
-            const user = localStorage.getItem("user");
-            return user ? JSON.parse(user) : null;
-        } catch {
-            return null;
-        }
-    })(),
-    token: (() => {
-        try {
-            return localStorage.getItem("token");
-        } catch {
-            return null;
-        }
-    })(),
-    loading: false,
-    error: null
+  user: getInitialUser(),
+  token: getInitialToken(),
+  loading: false,
+  error: null
 }
 
 
@@ -128,8 +143,13 @@ const authSlice = createSlice({
                 state.token = action.payload.token;
                 state.user = action.payload.user;
 
+                // Save to localStorage
                 localStorage.setItem("token", action.payload.token);
                 localStorage.setItem("user", JSON.stringify(action.payload.user));
+                
+                console.log("✅ Login successful - Auth data saved to localStorage");
+                console.log("Token:", action.payload.token.substring(0, 20) + "...");
+                console.log("User:", action.payload.user.email, "Role:", action.payload.user.role);
             })
 
             .addCase(loginUser.rejected, (state, action) => {

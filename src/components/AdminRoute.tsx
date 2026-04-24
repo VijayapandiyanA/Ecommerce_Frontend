@@ -7,28 +7,38 @@ type Props = {
 };
 
 export default function AdminRoute({ children }: Props) {
-  const { token, user, loading } = useAppSelector((state) => state.auth);
+  const { token, user } = useAppSelector((state) => state.auth);
 
-  // While auth is loading, show nothing (prevents redirect flashing)
-  if (loading) {
-    return <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>Loading...</div>;
-  }
+  // Check localStorage directly as backup if Redux state is empty
+  const hasToken = token || localStorage.getItem("token");
+  const storedUser = user || (() => {
+    try {
+      const u = localStorage.getItem("user");
+      return u ? JSON.parse(u) : null;
+    } catch {
+      return null;
+    }
+  })();
 
   // No token means not logged in
-  if (!token) {
+  if (!hasToken) {
+    console.log("❌ AdminRoute: No token found");
     return <Navigate to="/login" replace />;
   }
 
   // Token exists but user info is missing (shouldn't happen, but handle it)
-  if (!user) {
+  if (!storedUser) {
+    console.log("❌ AdminRoute: No user data found");
     return <Navigate to="/login" replace />;
   }
 
   // Token exists and user exists but not admin
-  if (user.role !== "admin") {
+  if (storedUser.role !== "admin") {
+    console.log("❌ AdminRoute: User is not admin");
     return <Navigate to="/products" replace />;
   }
 
   // All checks passed - render admin dashboard
+  console.log("✅ AdminRoute: Rendering admin dashboard");
   return <>{children}</>;
 }
