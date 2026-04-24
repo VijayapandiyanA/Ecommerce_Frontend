@@ -87,7 +87,7 @@ export const loginUser = createAsyncThunk<
         async (data, { rejectWithValue }) => {
 
             try {
-                const res = await api.post("users/login", data)
+                const res = await api.post("/users/login", data)
                 return res.data
             } catch (err: any) {
                 return rejectWithValue(err.response.data.message)
@@ -106,7 +106,7 @@ export const registerUser = createAsyncThunk<
         "auth/register",
         async (data, { rejectWithValue }) => {
             try {
-                const res = await api.post("users/register", data)
+                const res = await api.post("/users/register", data)
                 return res.data
             }
             catch (err: any) {
@@ -138,19 +138,14 @@ const authSlice = createSlice({
                     state.error = null
             })
 
-            .addCase(loginUser.fulfilled, (state, action) => {
-                state.loading = false;
-                state.token = action.payload.token;
-                state.user = action.payload.user;
+           .addCase(loginUser.fulfilled, (state, action) => {
+  state.loading = false;
+  state.token = action.payload.token;
+  state.user = action.payload.user;
 
-                // Save to localStorage
-                localStorage.setItem("token", action.payload.token);
-                localStorage.setItem("user", JSON.stringify(action.payload.user));
-                
-                console.log("✅ Login successful - Auth data saved to localStorage");
-                console.log("Token:", action.payload.token.substring(0, 20) + "...");
-                console.log("User:", action.payload.user.email, "Role:", action.payload.user.role);
-            })
+  localStorage.setItem("token", action.payload.token);
+  localStorage.setItem("user", JSON.stringify(action.payload.user));
+})
 
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
