@@ -71,16 +71,16 @@ number,
 
 
 export const createProduct = createAsyncThunk<
-  Product,                 // ✅ return type
-  CreateProductPayload,    // ✅ input type
-  { rejectValue: string }  // ✅ error type
+  Product,               
+  CreateProductPayload,    
+  { rejectValue: string }  
 >(
   "products/create",
   async (data, { rejectWithValue }) => {
     try {
       const res = await api.post("/products", data);
 
-      // 🔥 IMPORTANT: return actual product
+  
       return res.data.data; // or res.data (depends on your API)
     } catch (err: any) {
       return rejectWithValue(
@@ -106,17 +106,20 @@ export const updateProduct = createAsyncThunk(
 
 
 
-export const deleteProduct = createAsyncThunk(
-  "products/delete",
-  async (id: number, { rejectWithValue }) => {
-    try {
-      await api.delete(`/products/${id}`);
-      return id;
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message);
-    }
+export const deleteProduct = createAsyncThunk<
+  number,
+  number,
+  { rejectValue: string }
+>("products/delete", async (id, { rejectWithValue }) => {
+  try {
+    await api.delete(`/products/${id}`);
+    return id;
+  } catch (err: any) {
+    return rejectWithValue(
+      err.response?.data?.message || "Failed to delete product"
+    );
   }
-);
+});
 
 
 
