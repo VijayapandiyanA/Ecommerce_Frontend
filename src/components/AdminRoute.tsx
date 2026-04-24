@@ -9,13 +9,21 @@ type Props = {
 export default function AdminRoute({ children }: Props) {
   const { token, user } = useAppSelector((state) => state.auth);
 
+  // No token means not logged in
   if (!token) {
     return <Navigate to="/login" replace />;
   }
 
-  if (user && user.role !== "admin") {
+  // Token exists but user info is missing (shouldn't happen, but handle it)
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Token exists and user exists but not admin
+  if (user.role !== "admin") {
     return <Navigate to="/products" replace />;
   }
 
+  // All checks passed - render admin dashboard
   return <>{children}</>;
 }

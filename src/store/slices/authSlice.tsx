@@ -40,12 +40,23 @@ interface LoginResponse {
 
 
 const initialState: AuthState = {
-
-    user: null,
-    token: localStorage.getItem("token"),
+    user: (() => {
+        try {
+            const user = localStorage.getItem("user");
+            return user ? JSON.parse(user) : null;
+        } catch {
+            return null;
+        }
+    })(),
+    token: (() => {
+        try {
+            return localStorage.getItem("token");
+        } catch {
+            return null;
+        }
+    })(),
     loading: false,
     error: null
-
 }
 
 
@@ -99,7 +110,7 @@ const authSlice = createSlice({
             state.user = null;
             state.token = null;
             localStorage.removeItem("token");
-
+            localStorage.removeItem("user");
         },
 
 
@@ -118,6 +129,7 @@ const authSlice = createSlice({
                 state.user = action.payload.user;
 
                 localStorage.setItem("token", action.payload.token);
+                localStorage.setItem("user", JSON.stringify(action.payload.user));
             })
 
             .addCase(loginUser.rejected, (state, action) => {
