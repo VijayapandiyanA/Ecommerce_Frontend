@@ -10,7 +10,7 @@ import "../AdminDashboard.css";
 
 export default function AdminDashboard() {
   const dispatch = useAppDispatch();
-  const { products } = useAppSelector((state) => state.products);
+  const { products, error } = useAppSelector((state) => state.products);
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -18,6 +18,7 @@ export default function AdminDashboard() {
   const [imageUrl, setImageUrl] = useState("");
   const [stock, setStock] = useState("");
   const [category, setCategory] = useState("");
+  const [deleteMessage, setDeleteMessage] = useState("");
 
   const [isEdit, setIsEdit] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
@@ -79,10 +80,61 @@ export default function AdminDashboard() {
     setCategory(product.category);
   };
 
+  const handleDelete = async (productId: number) => {
+    if (confirm("Are you sure you want to delete this product?")) {
+      setDeleteMessage("");
+      const result = await dispatch(deleteProduct(productId));
+      
+      // Check if delete was successful
+      if (deleteProduct.fulfilled.match(result)) {
+        setDeleteMessage("✅ Product deleted successfully!");
+        setTimeout(() => setDeleteMessage(""), 3000);
+        // Refetch products to ensure UI is in sync with backend
+        await dispatch(fetchProducts());
+      } else if (deleteProduct.rejected.match(result)) {
+        // Show the actual error from backend
+        const errorMsg = result.payload || "Failed to delete product. Please try again.";
+        setDeleteMessage(`❌ ${errorMsg}`);
+        setTimeout(() => setDeleteMessage(""), 5000);
+      }
+    }
+  };
+
   return (
     <div className="admin-page">
       <div className="admin-container">
         <h2 className="admin-title"> Admin Dashboard</h2>
+
+        {/* SUCCESS/ERROR MESSAGES */}
+        {deleteMessage && (
+          <div style={{
+            padding: "12px 16px",
+            marginBottom: "20px",
+            backgroundColor: deleteMessage.includes("❌") ? "#f8d7da" : "#d4edda",
+            color: deleteMessage.includes("❌") ? "#721c24" : "#155724",
+            borderRadius: "4px",
+            border: deleteMessage.includes("❌") ? "1px solid #f5c6cb" : "1px solid #c3e6cb",
+            fontSize: "14px",
+            fontWeight: "500"
+          }}>
+            {deleteMessage}
+          </div>
+        )}
+
+        {error && (
+          <div style={{
+            padding: "12px 16px",
+            marginBottom: "20px",
+            backgroundColor: "#f8d7da",
+            color: "#721c24",
+            borderRadius: "4px",
+            border: "1px solid #f5c6cb",
+            fontSize: "14px",
+            fontWeight: "500"
+          }}>
+            ⚠️ {error}
+          </div>
+        )}
 
         {/* FORM */}
         <div className="admin-form-card">
@@ -178,7 +230,7 @@ export default function AdminDashboard() {
 
                   <button
                     className="admin-delete-btn"
-                    onClick={() => dispatch(deleteProduct(product.id))}
+                    onClick={() => handleDelete(product.id)}
                   >
                     🗑 Delete
                   </button>
